@@ -50,6 +50,11 @@ void APlayerPawn::BeginPlay()
 void APlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	FVector dir = FVector(0, h, v);
+	dir.Normalize();
+	FVector newLocation = GetActorLocation() + dir + moveSpeed * DeltaTime;
+	SetActorLocation(newLocation);
 }
 
 // Called to bind functionality to input
@@ -69,9 +74,11 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void APlayerPawn::OnInputHorizontal(const struct FInputActionValue& value)
 {
+	h = value.Get<float>();
 }
 
 void APlayerPawn::OnInputVertical(const struct FInputActionValue& value)
 {
+	v = value.Get<float>();
 }
 

@@ -39,10 +39,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UInputAction* iaVertical;
 	
-	
+	UPROPERTY(EditAnywhere)
+	float moveSpeed = 100.0f;
 private:
 	float h;
-	float w;
+	float v;
 	
 	void OnInputHorizontal(const struct FInputActionValue& value);
 	void OnInputVertical(const struct FInputActionValue& value);

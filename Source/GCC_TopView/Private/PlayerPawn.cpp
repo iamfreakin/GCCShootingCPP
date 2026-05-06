@@ -53,7 +53,7 @@ void APlayerPawn::Tick(float DeltaTime)
 	
 	FVector dir = FVector(0, h, v);
 	dir.Normalize();
-	FVector newLocation = GetActorLocation() + dir + moveSpeed * DeltaTime;
+	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
 	SetActorLocation(newLocation);
 }
 

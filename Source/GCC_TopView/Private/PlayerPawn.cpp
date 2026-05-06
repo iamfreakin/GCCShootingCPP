@@ -22,6 +22,8 @@ APlayerPawn::APlayerPawn()
 	// 스태틱메시를 박스콜리전의 자식으로 설정
 	meshComponent->SetupAttachment(boxComponent);
 	
+	FVector boxSize = FVector(50.0f, 50.0f, 50.0f);
+	boxComponent->SetBoxExtent(boxSize);
 }
 
 // Called when the game starts or when spawned

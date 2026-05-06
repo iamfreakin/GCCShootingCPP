@@ -29,7 +29,21 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* boxComponent;
-
 	UPROPERTY(EditAnywhere)
 	class UStaticMeshComponent* meshComponent;
+	
+	UPROPERTY(EditAnywhere)
+	class UInputMappingContext* imcPlayerInput;
+	UPROPERTY(EditAnywhere)
+	class UInputAction* iaHorizontal;
+	UPROPERTY(EditAnywhere)
+	class UInputAction* iaVertical;
+	
+	
+private:
+	float h;
+	float w;
+	
+	void OnInputHorizontal(const struct FInputActionValue& value);
+	void OnInputVertical(const struct FInputActionValue& value);
 };

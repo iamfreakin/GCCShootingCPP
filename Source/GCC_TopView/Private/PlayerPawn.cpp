@@ -3,6 +3,8 @@
 
 #include "PlayerPawn.h"
 
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "IEditableSkeleton.h"
 #include "Components/BoxComponent.h"
 
@@ -31,6 +33,17 @@ void APlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	APlayerController* pc = GetWorld()->GetFirstPlayerController();
+	if (pc != nullptr)
+	{
+		// 플레이어 컨트롤러부터 입력서브시스템 정보 가져오기
+		UEnhancedInputLocalPlayerSubsystem* subsys =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(pc->GetLocalPlayer());
+		if (subsys != nullptr)
+		{
+			subsys->AddMappingContext(imcPlayerInput, 0);
+		}
+	}
 }
 
 // Called every frame
@@ -43,5 +56,22 @@ void APlayerPawn::Tick(float DeltaTime)
 void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	UEnhancedInputComponent* eic = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (eic != nullptr)
+	{
+		eic->BindAction(iaHorizontal, ETriggerEvent::Triggered, this, &APlayerPawn::OnInputHorizontal);
+		eic->BindAction(iaHorizontal, ETriggerEvent::Completed, this, &APlayerPawn::OnInputHorizontal);
+		eic->BindAction(iaVertical, ETriggerEvent::Triggered, this, &APlayerPawn::OnInputVertical);
+		eic->BindAction(iaVertical, ETriggerEvent::Completed, this, &APlayerPawn::OnInputVertical);
+	}
+}
+
+void APlayerPawn::OnInputHorizontal(const struct FInputActionValue& value)
+{
+}
+
+void APlayerPawn::OnInputVertical(const struct FInputActionValue& value)
+{
 }
 

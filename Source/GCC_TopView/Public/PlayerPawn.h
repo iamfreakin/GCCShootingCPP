@@ -41,10 +41,22 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	float moveSpeed = 100.0f;
+	
+	UPROPERTY(EditAnywhere)
+	class UInputAction* ia_fire;
+	UPROPERTY(EditAnywhere)
+	class UArrowComponent* firePosition;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABullet> bulletFactory;
+	UPROPERTY(EditAnywhere)
+	class USoundBase* fireSound;
+	
 private:
 	float h;
 	float v;
 	
 	void OnInputHorizontal(const struct FInputActionValue& value);
 	void OnInputVertical(const struct FInputActionValue& value);
+	void Fire();
+	
 };

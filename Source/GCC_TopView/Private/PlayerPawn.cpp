@@ -3,10 +3,13 @@
 
 #include "PlayerPawn.h"
 
+#include "Bullet.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "IEditableSkeleton.h"
+#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -26,6 +29,9 @@ APlayerPawn::APlayerPawn()
 	
 	FVector boxSize = FVector(50.0f, 50.0f, 50.0f);
 	boxComponent->SetBoxExtent(boxSize);
+	
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
+	firePosition->SetupAttachment(boxComponent);
 }
 
 // Called when the game starts or when spawned
@@ -69,6 +75,8 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		eic->BindAction(iaHorizontal, ETriggerEvent::Completed, this, &APlayerPawn::OnInputHorizontal);
 		eic->BindAction(iaVertical, ETriggerEvent::Triggered, this, &APlayerPawn::OnInputVertical);
 		eic->BindAction(iaVertical, ETriggerEvent::Completed, this, &APlayerPawn::OnInputVertical);
+		// 발사 추가
+		eic->BindAction(ia_fire, ETriggerEvent::Started, this, &APlayerPawn::Fire);
 	}
 }
 
@@ -80,5 +88,16 @@ void APlayerPawn::OnInputHorizontal(const struct FInputActionValue& value)
 void APlayerPawn::OnInputVertical(const struct FInputActionValue& value)
 {
 	v = value.Get<float>();
+}
+
+void APlayerPawn::Fire()
+{
+	//if (!GetWorld()) return;
+	//FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * 100;
+	ABullet* bullet = GetWorld()->SpawnActor<ABullet>
+		(bulletFactory, firePosition->GetComponentLocation(),
+			firePosition->GetComponentRotation());
+
+	UGameplayStatics::PlaySound2D(GetWorld(),fireSound);
 }
 

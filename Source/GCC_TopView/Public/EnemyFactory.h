@@ -24,7 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class AEnemyFactory> enemy;
+	TSubclassOf<class AEnemyActor> enemy;
 	
 	UPROPERTY(EditAnywhere)
 	float dlayTime = 2.0f;

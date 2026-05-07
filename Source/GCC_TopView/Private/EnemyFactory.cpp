@@ -2,9 +2,7 @@
 
 
 #include "EnemyFactory.h"
-
-#include "IOS/IOSAppDelegate.h"
-
+#include "EnemyActor.h"
 
 // Sets default values
 AEnemyFactory::AEnemyFactory()
@@ -30,7 +28,7 @@ void AEnemyFactory::Tick(float DeltaTime)
 	if (currntTime > dlayTime)
 	{
 		currntTime = 0.0f;
-		AEnemyFactory* spawnActor = GetWorld()->SpawnActor<AEnemyFactory>(enemy,
+		AEnemyActor* spawnActor = GetWorld()->SpawnActor<AEnemyActor>(enemy,
 			GetActorLocation(), GetActorRotation());
 	}
 }

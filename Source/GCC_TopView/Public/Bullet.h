@@ -30,4 +30,7 @@ public:
 	// 충돌체 메시 포인터 변수 선언
 	UPROPERTY(EditDefaultsOnly)
 	class UStaticMeshComponent* meshComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float moveSpeed = 1000.f;
 };

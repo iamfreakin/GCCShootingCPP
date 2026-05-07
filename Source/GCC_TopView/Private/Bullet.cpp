@@ -16,10 +16,8 @@ ABullet::ABullet()
 	boxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("My Box Component"));
 	// 생성한 박스 콜리전 컴포넌트를 최상단 컴포넌트로 설정
 	SetRootComponent(boxComponent);
-	
 	FVector boxSize = FVector(50.0f, 50.0f, 50.0f);
 	boxComponent->SetBoxExtent(boxSize);
-	
 	// 스케일 조절 - 총알 형태에 가깝도록 SetWorldScale3D 조절
 	boxComponent->SetWorldScale3D(FVector(0.75f, 0.25f, 1.0f));
 	
@@ -38,5 +36,9 @@ void ABullet::BeginPlay()
 void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	// 총알 이동
+	FVector newLocation = GetActorLocation() + GetActorForwardVector() * moveSpeed * DeltaTime;
+	SetActorLocation(newLocation);
 }
 

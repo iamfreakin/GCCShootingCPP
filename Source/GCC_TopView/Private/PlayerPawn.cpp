@@ -63,14 +63,15 @@ void APlayerPawn::BeginPlay()
 }
 
 // Called every frame
-void APlayerPawn::Tick(float DeltaTime)
+auto APlayerPawn::Tick(float DeltaTime) -> void
 {
 	Super::Tick(DeltaTime);
 	
 	FVector dir = FVector(0, h, v);
 	dir.Normalize();
-	FVector newLocation = GetActorLocation() + dir * moveSpeed * DeltaTime;
-	SetActorLocation(newLocation);
+	FVector newLocation = dir * moveSpeed * DeltaTime;
+	SetActorLocation(GetActorLocation() + FVector(0, newLocation.Y, 0), true);
+	SetActorLocation(GetActorLocation() + FVector(0, 0, newLocation.Z), true);
 }
 
 // Called to bind functionality to input

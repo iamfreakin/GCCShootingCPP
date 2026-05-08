@@ -4,6 +4,7 @@
 #include "Bullet.h"
 
 #include "EnemyActor.h"
+#include "ShootingGameModeBase.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -62,6 +63,15 @@ void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorTransform());
 		// Enemy 제거
 		OtherActor->Destroy();
+		
+		AGameModeBase* currentGameMode = GetWorld()->GetAuthGameMode();
+		AShootingGameModeBase* currentGameModeBase = Cast<AShootingGameModeBase>(currentGameMode);
+
+		if (currentGameModeBase != nullptr)
+		{
+			// 점수 1점 추가 함수 호출
+			currentGameModeBase->AddScore(1);
+		}
 	}
 	// 총알 자신도 제거
 	Destroy();

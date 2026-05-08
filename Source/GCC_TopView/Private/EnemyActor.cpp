@@ -26,6 +26,8 @@ AEnemyActor::AEnemyActor()
 	FVector boxSize = FVector(50.0f, 50.0f, 50.0f);
 	boxComponent->SetBoxExtent(boxSize);
 	
+	//아래와 같이 에디터에서 생성할 프리셋 이름을 세팅
+	boxComponent->SetCollisionProfileName(TEXT("Enemy"));
 }
 
 // Called when the game starts or when spawned

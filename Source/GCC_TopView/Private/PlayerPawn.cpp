@@ -32,6 +32,16 @@ APlayerPawn::APlayerPawn()
 	
 	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("Fire Position"));
 	firePosition->SetupAttachment(boxComponent);
+	
+	// // 코드로 콜리전 설정하는 방법
+	// // 딱봐도 어려워보이죠? 언리얼에디터 프리셋으로 합시다요.
+	// boxComponent->SetCollisionObjectType(ECC_GameTraceChannel1);
+	// boxComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	// boxComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
+	// boxComponent->SetCollisionResponseToChannel(ECC_GameTraceChannel2, ECR_Ignore);
+	
+	//아래와 같이 에디터에서 생성할 프리셋 이름을 세팅
+	boxComponent->SetCollisionProfileName(TEXT("Player"));
 }
 
 // Called when the game starts or when spawned

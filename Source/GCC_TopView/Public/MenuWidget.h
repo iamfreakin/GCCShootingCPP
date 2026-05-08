@@ -14,6 +14,9 @@ class GCC_TOPVIEW_API UMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UButton* buttonRestart;
 	
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UButton* buttonQuit;
 };

@@ -19,7 +19,8 @@ public:
     
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMainWidget> mainWidget;
-    
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UMenuWidget> menuWidget;
 protected:
 	//위젯은    게임 시작 할때 생성되어야 하므로, beginplay를 오버라이드
 	virtual void BeginPlay() override;
@@ -29,6 +30,10 @@ private:
     
 	//에디터 뷰포트에 로드된 위젯 저장용 변수
 	class UMainWidget* mainUI;
+	class UMenuWidget* menuUI;
+	
+public:
 	//점수 UI 갱신 함수
 	void PrintScore();
+	void ShowMenu();
 };

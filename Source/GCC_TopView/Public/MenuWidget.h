@@ -19,4 +19,18 @@ class GCC_TOPVIEW_API UMenuWidget : public UUserWidget
 	
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UButton* buttonQuit;
+	
+	
+protected:
+	// 위젯 초기화 함수
+	virtual void NativeConstruct() override;
+	
+private:
+	// 재시작 기능
+	UFUNCTION()
+	void Restart();
+	
+	// 종료 기능
+	UFUNCTION()
+	void Quit();
 };

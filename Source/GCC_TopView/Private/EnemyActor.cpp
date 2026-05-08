@@ -5,6 +5,7 @@
 
 #include "EngineUtils.h"
 #include "PlayerPawn.h"
+#include "ShootingGameModeBase.h"
 #include "Components/BoxComponent.h"
 
 
@@ -64,19 +65,25 @@ void AEnemyActor::BeginPlay()
 	boxComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor::OnEnemyOverlap);
 }
 
-void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)
 {
 	// 충돌한 상대 액터를 APlayerPawn 클래스로 변환
 	APlayerPawn* player = Cast<APlayerPawn>(OtherActor);
+    
 	if (player != nullptr)
 	{
 		// 충돌된 플레이어 제거
 		OtherActor->Destroy();
+
+		// 게임 오버 메뉴 ShowMenu() 함수 호출
+		AShootingGameModeBase* currentGameModeBase = Cast<AShootingGameModeBase>(GetWorld()->GetAuthGameMode());
+		if (currentGameModeBase != nullptr)
+		{
+			currentGameModeBase->ShowMenu();
+		}
 	}
-	// 적 자신도 제거
-	Destroy();
 }
 
 // Called every frame

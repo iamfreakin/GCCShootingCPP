@@ -3,7 +3,9 @@
 
 #include "Bullet.h"
 
+#include "EnemyActor.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -33,6 +35,9 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// OnComponentBeginOverlap 델리게이트에 OnBulletOverlap 함수를 등록
+	// "Overlap" 발생하면 OnBulletOverlap() 호출해 라고 엔진에 등록 설정
+	boxComponent->OnComponentBeginOverlap.AddDynamic(this, &ABullet::OnBulletOverlap);
 }
 
 // Called every frame
@@ -45,3 +50,19 @@ void ABullet::Tick(float DeltaTime)
 	SetActorLocation(newLocation);
 }
 
+void ABullet::OnBulletOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 충돌한 상대 액터를 AEnemyActor 클래스로 변환
+	AEnemyActor* enemy = Cast<AEnemyActor>(OtherActor);
+	if (enemy != nullptr)
+	{
+		// 충돌 위치에 폭발 파티클 이펙트를 스폰
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), explosionFX, GetActorTransform());
+		// Enemy 제거
+		OtherActor->Destroy();
+	}
+	// 총알 자신도 제거
+	Destroy();
+}

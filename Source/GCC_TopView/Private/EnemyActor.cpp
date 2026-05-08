@@ -35,25 +35,49 @@ void AEnemyActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 1~100사이 임의 값 추첨
 	int32 drawResult = FMath::RandRange(1, 100);
-
 	if (drawResult <= traceRate)
 	{
+		// 추적을 위한 액터 탐색 반복 TActorIterator 활용
+		// for(TActorIterator<찾으려는 클래스> 위치포인터변수; 변수 이름; ++변수증감식) { 실행부 }
+		// 월드 공간에 APlayerPawn 클래스로 된 액터를 검색
 		for (TActorIterator<APlayerPawn> player(GetWorld()); player; ++player)
 		{
+			// 찾은 액터 이름이 BP_PlayerPawn이라면,
 			if (player->GetName().Contains(TEXT("BP_PlayerPawn")))
 			{
+				// 찾은 플레이어 위치 - 에너미 자선의 위치 = dir 방향 변수에 할당(그 방향으로 가기 위해서)
 				dir = player->GetActorLocation() - GetActorLocation();
-				dir.Normalize();
+				dir.Normalize(); 
 			}
 		}
 	}
 	else
 	{
+		// 직진
 		dir = GetActorForwardVector();
 	}
+	
+	// OnComponentBeginOverlap 델리게이트에 OnBulletOverlap 함수를 등록
+	// "Overlap" 발생하면 OnBulletOverlap() 호출해 라고 엔진에 등록 설정
+	boxComponent->OnComponentBeginOverlap.AddDynamic(this, &AEnemyActor::OnEnemyOverlap);
 }
 
+void AEnemyActor::OnEnemyOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
+	bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 충돌한 상대 액터를 APlayerPawn 클래스로 변환
+	APlayerPawn* player = Cast<APlayerPawn>(OtherActor);
+	if (player != nullptr)
+	{
+		// 충돌된 플레이어 제거
+		OtherActor->Destroy();
+	}
+	// 적 자신도 제거
+	Destroy();
+}
 
 // Called every frame
 void AEnemyActor::Tick(float DeltaTime)
